@@ -1,0 +1,31 @@
+# nginx-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment-replicaset
+  # Deploymentの名前
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  # Podを3つ作成するように指定
+  selector:
+    matchLabels:
+      app: nginx
+      # このラベルを持つPodを管理対象とする
+  template:
+  # ここから下が作成されるPodのテンプレート(設計図)
+    metadata:
+    # Podの名称は Deployment の 名前-ランダムの一意の名称　になる
+      labels:
+        app: nginx
+        # Podにこのラベルを付与する(selectorと一致させる)
+    spec:
+      containers:
+      - name: nginx-container20
+      # Pod内のコンテナ名
+        image: nginx:latest
+        # 使用するコンテナイメージ
+        ports:
+        - containerPort: 80
+        # コンテナがリッスンするポート

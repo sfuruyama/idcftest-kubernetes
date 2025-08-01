@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+  # Podのテンプレートをここに記述する
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx-container11
+      # この名前を変更したい場合
+        image: nginx:latest

@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: emptydir-example-pod
+spec:
+  # 1. Podで利用するVolumeを定義
+  volumes:
+  - name: shared-data # Volumeの名前
+    emptyDir: {}      # Volumeの種類としてemptyDirを指定
+
+  # 2. Pod内で動かすコンテナを定義
+  containers:
+  # --- 1つ目のコンテナ (書き込み担当) ---
+  - name: writer-container
+    image: busybox
+    # 5秒ごとに現在時刻を/data/index.htmlに書き込む
+    command: ["/bin/sh", "-c", "while true; do date >> /data/index.html; echo Data written; sleep 5; done"]
+    # Volumeをコンテナにマウント(接続)
+    volumeMounts:
+    - name: shared-data      # どのVolumeを使うか名前で指定
+      mountPath: /data       # コンテナ内のどこに接続するか
+
+  # --- 2つ目のコンテナ (読み込み担当) ---
+  - name: reader-container
+    image: busybox
+    # /data/index.htmlの内容を監視し、変更があれば表示し続ける
+    command: ["/bin/sh", "-c", "tail -f /data/index.html"]
+    # 同じVolumeをマウント
+    volumeMounts:
+    - name: shared-data
+      mountPath: /data

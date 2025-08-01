@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-externalip
+spec:
+  type: ClusterIP
+  #煤賀さんが来てからNodeにSSH侵入してちゃんとListenしているかを見てみる
+  #NodeのIPをここで入力する・比較的確実に外部にサービスを公開させるための設定
+  externalIPs:
+  - 10.41.0.107
+  - 10.41.0.127
+  ports:
+  - name: "http-port"
+    protocol: "TCP"
+    port: 8080
+    targetPort: 80
+  selector:
+    app: sample-app

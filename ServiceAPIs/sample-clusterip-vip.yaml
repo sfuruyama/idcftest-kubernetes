@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-clusterip-vip
+spec:
+  type: ClusterIP
+  #クラスター内に手動でIPアドレスを指定する
+  clusterIP: 10.147.206.36
+  ports:
+  - name: "http-port"
+    protocol: "TCP"
+    port: 8080
+    targetPort: 80
+  selector:
+    app: sample-app
+  

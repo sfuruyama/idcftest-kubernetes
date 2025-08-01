@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sample-rs
+spec:
+  replicas: 3
+  # このReplicaSetではsample-appのPodレプリカを作成します！！！という宣言
+  selector:
+    matchLabels:
+      app: sample-app
+  # なんやかんやあって、作成することになったらtemplateをもとに作成するよ～
+  template:
+    metadata:
+      labels:
+        app: sample-app
+  # 作成されるPodのレプリカ名がそろっていないと、条件が完了せず、延々と違う名前Podが作成される
+  spec:
+    containers:
+    - name: nginx-container
+      image: nginx:latest

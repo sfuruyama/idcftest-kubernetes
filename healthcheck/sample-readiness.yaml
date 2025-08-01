@@ -1,0 +1,16 @@
+apiVersion: v1 
+kind: Pod
+metadata:
+  name: sample-livenness
+spec:
+  containers:
+  - name: nginx-container
+    image: nginx-latest
+    readinessProbe:
+      exec:
+        command: ["Is","/usr/share/nginx/html/50x.html"]
+      timeoutSeconds: 1
+      successThreshold: 2
+      failureThreshold: 1
+      initialDelaySeconds: 5
+      periodSeconds: 3

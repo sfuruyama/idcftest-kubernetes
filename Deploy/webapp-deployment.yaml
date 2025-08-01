@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-server-deployment
+  labels:
+    app: web-server
+spec:
+  # Podのレプリカ数
+  replicas: 4
+  selector:
+    matchLabels:
+      app: web-server
+  template:
+    metadata:
+      labels:
+        app: web-server
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        # ConfigMapのコンテンツをNginxのドキュメントルートにマウントします
+        - name: web-contents-volume
+          mountPath: /usr/share/nginx/html
+      volumes:
+      # マウントするボリュームを定義し、ConfigMap 'web-contents' をソースとして指定します
+      - name: web-contents-volume
+        configMap:
+          name: web-contents
